@@ -47,4 +47,22 @@ describe("AdsMarket", function() {
     expect(await this.am.taxPeriod()).to.equal(88);
   });
 
+  it("normal users cannot mint", async function() {
+    await expect(
+      this.am.connect(this.accounts[0]).mint("hello world")
+    ).to.be.revertedWith("Ownable: caller is not the owner");
+  });
+
+  it("owner can mint", async function() {
+    expect(await this.am.totalSupply()).to.equal(0);
+
+    await this.am.connect(this.owner).mint("FIRST");
+
+    expect(await this.am.totalSupply()).to.equal(1);
+    expect(await this.am.ownerOf(0)).to.equal(this.owner.address);
+    expect(await this.am.tokenDescriptions(0)).to.equal("FIRST");
+
+    // const item = await this.am.tokenItems(0);
+    // expect();
+  });
 });
