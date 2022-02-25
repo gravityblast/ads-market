@@ -28,4 +28,23 @@ describe("AdsMarket", function() {
     expect(await this.am.owner()).to.equal(this.owner.address);
   });
 
+  it("normal users cannot call setConfig", async function() {
+    await expect(
+      this.am.connect(this.accounts[0]).setConfig(1, 1)
+    ).to.be.revertedWith("Ownable: caller is not the owner");
+  });
+
+  it("owner can call setConfig", async function() {
+    expect(await this.am.taxPerc()).to.equal(this.taxPerc);
+    expect(await this.am.taxPeriod()).to.equal(this.taxPeriod);
+
+    await this.am.connect(this.owner).setConfig(77, 88);
+
+    expect(await this.am.taxPerc()).to.not.equal(this.taxPerc);
+    expect(await this.am.taxPeriod()).to.not.equal(this.taxPeriod);
+
+    expect(await this.am.taxPerc()).to.equal(77);
+    expect(await this.am.taxPeriod()).to.equal(88);
+  });
+
 });
