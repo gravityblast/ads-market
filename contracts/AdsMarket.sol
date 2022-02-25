@@ -27,5 +27,10 @@ contract AdsMarket is Ownable, ERC721Enumerable {
     taxPeriod = _taxPeriod;
   }
 
+  function mint(string memory description) public onlyOwner {
+    uint256 id = totalSupply();
+    _mint(msg.sender, id);
+    tokenDescriptions[id] = description;
+  }
 }
 
