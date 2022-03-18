@@ -75,12 +75,14 @@ contract AdsMarket is Ownable, ERC721Enumerable {
     // transfer erc20 tokens back to prev owner
     uint256 timePassed = block.timestamp - prevTimestamp;
     uint256 prevTaxAmount = prevBid * prevTaxPerc / 100;
-    // x : prevTaxAmount = timePassed : prevTaxDuration
 
     uint256 amountToPay = prevTaxAmount * timePassed / prevTaxDuration;
     uint256 amountToGivBack = prevTaxAmount - amountToPay;
-    if (amountToGivBack > 0)
+    if (amountToGivBack > 0) {
       IERC20(token).safeTransfer(prevUser, amountToGivBack);
+    }
   }
-}
 
+  // withdraw bid
+  // reset when time expires
+}
